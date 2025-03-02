@@ -5,6 +5,3 @@ node_modules/
 # Editor/OS files
 .vscode/
 .DS_Store
-.env
-.env.development
-.env.production
