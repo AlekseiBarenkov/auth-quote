@@ -10,8 +10,12 @@ const PORT = process.env.PORT || 5000
 app.use(cors())
 app.use(express.json())
 
+app.use('/auth', require('./routes/auth'))
+app.use('/profile', require('./routes/profile'))
+app.use('/', require('./routes/quotes'))
+
 app.get('/', (_, res) => {
-	res.json({ success: true, message: 'API is running!' })
+	res.json({ success: true, message: 'AuthQuote API is running!' })
 })
 
 app.listen(PORT, () => {
