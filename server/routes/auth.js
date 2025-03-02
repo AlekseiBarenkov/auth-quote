@@ -24,9 +24,16 @@ router.post('/login', (req, res) => {
 })
 
 router.delete('/logout', (req, res) => {
-	const token = req.query.token
-	if (token) delete sessions[token]
-	res.json({ success: true, data: {} })
+	const token = req.query.token || req.headers.authorization?.split(' ')[1]
+
+	if (!token || !sessions[token]) {
+		return res
+			.status(400)
+			.json({ success: false, data: { message: 'Invalid token.' } })
+	}
+
+	delete sessions[token] // Удаляем токен из активных сессий
+	return res.json({ success: true, data: {} })
 })
 
 module.exports = router
