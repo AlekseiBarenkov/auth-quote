@@ -32,7 +32,7 @@ router.delete('/logout', (req, res) => {
 			.json({ success: false, data: { message: 'Invalid token.' } })
 	}
 
-	delete sessions[token] // Удаляем токен из активных сессий
+	delete sessions[token]
 	return res.json({ success: true, data: {} })
 })
 

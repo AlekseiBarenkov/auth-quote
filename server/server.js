@@ -18,6 +18,7 @@ app.use('/auth', authRoutes)
 app.use('/user', userRoutes)
 app.use('/quotes', quoteRoutes)
 
+//!================================
 app.get('/', (_, res) => {
 	res.json({ success: true, message: 'API is running!' })
 })
