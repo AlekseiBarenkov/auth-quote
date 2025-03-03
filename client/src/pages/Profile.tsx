@@ -9,7 +9,6 @@ export const Profile = () => {
 	const [isFetchingQuote, setIsFetchingQuote] = useState(false)
 	let abortController = new AbortController()
 
-	// Получение профиля пользователя
 	const { data: user, isLoading } = useQuery({
 		queryKey: ['profile'],
 		queryFn: async () => {
@@ -18,7 +17,6 @@ export const Profile = () => {
 		},
 	})
 
-	// Запрос автора и цитаты
 	const fetchQuote = useMutation({
 		mutationFn: async () => {
 			setIsFetchingQuote(true)
