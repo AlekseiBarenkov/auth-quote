@@ -44,7 +44,6 @@ export const Profile = () => {
 
 	const handleLogout = async () => {
 		await api.delete('/auth/logout')
-		localStorage.removeItem('token')
 		navigate('/login')
 	}
 

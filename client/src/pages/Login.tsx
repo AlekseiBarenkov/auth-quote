@@ -10,12 +10,9 @@ export const Login = () => {
 
 	const loginMutation = useMutation({
 		mutationFn: async () => {
-			const response = await api.post('/auth/login', { email, password })
-
-			return response.data
+			await api.post('/auth/login', { email, password })
 		},
-		onSuccess: data => {
-			localStorage.setItem('token', data.data.token)
+		onSuccess: () => {
 			navigate('/profile')
 		},
 	})
