@@ -1,15 +1,16 @@
 const sessions = require('../data/sessions')
 
 const authenticate = (req, res, next) => {
-	const token = req.query.token || req.headers.authorization?.split(' ')[1]
+	const token = req.cookies.token
+	const user = token ? sessions.get(token) : null
 
-	if (!token || !sessions[token]) {
+	if (!user) {
 		return res
 			.status(403)
 			.json({ success: false, data: { message: 'Access denied.' } })
 	}
 
-	req.user = sessions[token]
+	req.user = user
 	next()
 }
 

@@ -5,8 +5,6 @@ const sessions = require('../data/sessions')
 
 const router = express.Router()
 
-const isProduction = process.env.NODE_ENV === 'production'
-
 router.post('/login', (req, res) => {
 	const { email, password } = req.body
 	const user = users.find(
@@ -20,7 +18,7 @@ router.post('/login', (req, res) => {
 	}
 
 	const token = crypto.randomBytes(20).toString('hex')
-	sessions[token] = user
+	sessions.set(token, user)
 
 	res.cookie('token', token, {
 		httpOnly: true,
@@ -34,13 +32,13 @@ router.post('/login', (req, res) => {
 router.delete('/logout', (req, res) => {
 	const token = req.cookies.token
 
-	if (!token || !sessions[token]) {
+	if (!token || !sessions.get(token)) {
 		return res
 			.status(400)
 			.json({ success: false, data: { message: 'Invalid token.' } })
 	}
 
-	delete sessions[token]
+	sessions.remove(token)
 	res.clearCookie('token')
 
 	return res.json({ success: true })
