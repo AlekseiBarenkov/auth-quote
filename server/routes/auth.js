@@ -5,6 +5,8 @@ const sessions = require('../data/sessions')
 
 const router = express.Router()
 
+const isProduction = process.env.NODE_ENV === 'production'
+
 router.post('/login', (req, res) => {
 	const { email, password } = req.body
 	const user = users.find(
@@ -20,11 +22,17 @@ router.post('/login', (req, res) => {
 	const token = crypto.randomBytes(20).toString('hex')
 	sessions[token] = user
 
-	return res.json({ success: true, data: { token } })
+	res.cookie('token', token, {
+		httpOnly: true,
+		secure: process.env.NODE_ENV === 'production',
+		sameSite: 'strict',
+	})
+
+	return res.json({ success: true })
 })
 
 router.delete('/logout', (req, res) => {
-	const token = req.query.token || req.headers.authorization?.split(' ')[1]
+	const token = req.cookies.token
 
 	if (!token || !sessions[token]) {
 		return res
@@ -33,7 +41,9 @@ router.delete('/logout', (req, res) => {
 	}
 
 	delete sessions[token]
-	return res.json({ success: true, data: {} })
+	res.clearCookie('token')
+
+	return res.json({ success: true })
 })
 
 module.exports = router
