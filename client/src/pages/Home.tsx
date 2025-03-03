@@ -1,12 +1,16 @@
 import type { FC } from 'react'
 import { useQuery } from '@tanstack/react-query'
-import { api } from '../api'
+import { api, ApiResponse } from '../api'
 
 export const Home: FC = () => {
 	const { data, isLoading, error } = useQuery({
 		queryKey: ['companyInfo'],
 		queryFn: async () => {
-			const response = await api.get('/info')
+			const response = await api.get<ApiResponse<{ info: string }>>('/info')
+
+			if (!response.data.success) {
+				throw new Error('Error loading data')
+			}
 			return response.data
 		},
 	})
@@ -17,7 +21,7 @@ export const Home: FC = () => {
 	return (
 		<div>
 			<h1>Welcome to AuthQuote</h1>
-			<p dangerouslySetInnerHTML={{ __html: data?.data.info }} />
+			<p dangerouslySetInnerHTML={{ __html: data?.data.info || '' }} />
 		</div>
 	)
 }

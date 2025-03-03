@@ -1,0 +1,12 @@
+{
+	"semi": true,
+	"singleQuote": true,
+	"jsxSingleQuote": true,
+	"trailingComma": "none",
+	"printWidth": 90,
+	"tabWidth": 2,
+	"arrowParents": "avoid",
+	"useTabs": true,
+	"importOrderSeparation": true,
+	"importOrderSortSpecifiers": true
+}

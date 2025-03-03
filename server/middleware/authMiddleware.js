@@ -5,9 +5,7 @@ const authenticate = (req, res, next) => {
 	const user = token ? sessions.get(token) : null
 
 	if (!user) {
-		return res
-			.status(403)
-			.json({ success: false, data: { message: 'Access denied.' } })
+		return res.json({ success: false, data: { message: 'Access denied.' } })
 	}
 
 	req.user = user

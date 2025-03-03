@@ -12,9 +12,7 @@ router.post('/login', (req, res) => {
 	)
 
 	if (!user) {
-		return res
-			.status(401)
-			.json({ success: false, data: { message: 'Access denied.' } })
+		return res.json({ success: false, data: { message: 'Access denied.' } })
 	}
 
 	const token = crypto.randomBytes(20).toString('hex')
@@ -26,22 +24,20 @@ router.post('/login', (req, res) => {
 		sameSite: 'strict',
 	})
 
-	return res.json({ success: true })
+	return res.json({ success: true, data: { token } })
 })
 
 router.delete('/logout', (req, res) => {
 	const token = req.cookies.token
 
 	if (!token || !sessions.get(token)) {
-		return res
-			.status(400)
-			.json({ success: false, data: { message: 'Invalid token.' } })
+		return res.json({ success: false, data: { message: 'Invalid token.' } })
 	}
 
 	sessions.remove(token)
 	res.clearCookie('token')
 
-	return res.json({ success: true })
+	return res.json({ success: true, data: {} })
 })
 
 module.exports = router
