@@ -4,6 +4,7 @@ const dotenv = require('dotenv')
 
 dotenv.config()
 
+const infoRoutes = require('./routes/info')
 const authRoutes = require('./routes/auth')
 const userRoutes = require('./routes/user')
 const quoteRoutes = require('./routes/quotes')
@@ -14,6 +15,7 @@ const PORT = process.env.PORT || 5000
 app.use(cors())
 app.use(express.json())
 
+app.use('/info', infoRoutes)
 app.use('/auth', authRoutes)
 app.use('/user', userRoutes)
 app.use('/quotes', quoteRoutes)
