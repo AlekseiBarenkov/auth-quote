@@ -1,0 +1,19 @@
+.user-card {
+	display: flex;
+	align-items: center;
+	gap: 2rem;
+
+	&__left {
+		background-color: rgb(226, 227, 170);
+		padding: 1rem;
+		border-radius: 50%;
+	}
+
+	&__title {
+		margin-bottom: 1.2rem;
+	}
+	&__icon {
+		font-size: 4rem;
+		color: rgb(128, 107, 80);
+	}
+}

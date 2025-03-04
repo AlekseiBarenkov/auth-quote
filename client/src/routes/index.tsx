@@ -1,9 +1,9 @@
-import { createBrowserRouter, RouterProvider } from 'react-router-dom'
-import { ProfileProtectedRoute } from './profile-protected-route'
-import { RootLayout } from '../layouts/root'
-import { Home } from '../pages/Home'
-import { Login } from '../pages/Login'
-import { Profile } from '../pages/Profile'
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { RootLayout } from '../layouts/root';
+import { Home } from '../pages';
+import { Login } from '../pages';
+import { Profile } from '../pages';
+import { ProfileProtectedRoute } from './profile-protected-route';
 
 const router = createBrowserRouter([
 	{
@@ -15,10 +15,10 @@ const router = createBrowserRouter([
 			{
 				path: '/',
 				element: <ProfileProtectedRoute />,
-				children: [{ path: '/profile', element: <Profile /> }],
-			},
-		],
-	},
-])
+				children: [{ path: '/profile', element: <Profile /> }]
+			}
+		]
+	}
+]);
 
-export const AppRouter = () => <RouterProvider router={router} />
+export const AppRouter = () => <RouterProvider router={router} />;

@@ -1,6 +1,8 @@
-import type { FC } from 'react';
+import { Suspense, type FC } from 'react';
 import { Outlet } from 'react-router-dom';
-import { Header } from '../../components';
+import { Header, PageLoader } from '../../components';
+
+import './style.scss';
 
 export const RootLayout: FC = () => {
 	return (
@@ -8,7 +10,9 @@ export const RootLayout: FC = () => {
 			<Header />
 
 			<main className='main__content'>
-				<Outlet />
+				<Suspense fallback={<PageLoader />}>
+					<Outlet />
+				</Suspense>
 			</main>
 		</div>
 	);

@@ -23,6 +23,7 @@ export const AuthorQuoteModal: FC<Props> = ({ data, onClose, isOpen, onCancel })
 
 	return (
 		<Modal
+			destroyOnClose
 			title={<h2>Requesting the quote</h2>}
 			footer={
 				<Button

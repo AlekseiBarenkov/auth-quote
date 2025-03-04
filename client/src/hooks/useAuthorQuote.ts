@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { Author, Quote } from '../@types';
 import { api, ApiResponse } from '../api';
 import { useModal } from './useModal';
@@ -42,7 +42,10 @@ export const useAuthorQuote = () => {
 
 	const abortController = useRef<AbortController>(new AbortController());
 
-	const fetchData = useCallback(async (signal: AbortSignal) => {
+	const fetchData = async () => {
+		abortController.current = new AbortController();
+		const signal = abortController.current.signal;
+
 		try {
 			setData({ ...initial });
 
@@ -103,39 +106,35 @@ export const useAuthorQuote = () => {
 				}
 			}));
 		} catch (error) {
-			if (!abortController.current.signal.aborted) {
+			if (!signal.aborted) {
 				setData({
 					quote: {
 						data: null,
 						isLoading: false,
-						error: error instanceof Error ? error.message : 'Произошла ошибка'
+						error: error instanceof Error ? error.message : 'Unexpected error'
 					},
 					author: {
 						data: null,
 						isLoading: false,
-						error: error instanceof Error ? error.message : 'Произошла ошибка'
+						error: error instanceof Error ? error.message : 'Unexpected error'
 					}
 				});
 			}
 		}
-	}, []);
-
-	useEffect(() => {
-		if (showModal) {
-			abortController.current = new AbortController();
-			const signal = abortController.current.signal;
-			fetchData(signal);
-		}
-
-		return () => {
-			abortController.current.abort();
-		};
-	}, [showModal, fetchData]);
+	};
 
 	const handleCancel = () => {
 		closeModal();
 		setData({ ...initial });
+		abortController.current.abort();
 	};
 
-	return { data, showModal, openModal, closeModal, handleCancel };
+	const handleOpenModal = async () => {
+		setData({ ...initial });
+		openModal();
+
+		await fetchData();
+	};
+
+	return { data, showModal, handleOpenModal, closeModal, handleCancel };
 };
