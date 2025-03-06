@@ -1,6 +1,6 @@
 import { createBrowserRouter, redirect, RouterProvider } from 'react-router-dom';
 import { RootLayout } from '../layouts/root';
-import { Home } from '../pages';
+import { Home, NotFound } from '../pages';
 import { Login } from '../pages';
 import { Profile } from '../pages';
 import { ProfileProtectedRoute } from './profile-protected-route';
@@ -29,6 +29,7 @@ const router = createBrowserRouter([
 	{
 		path: '/',
 		element: <RootLayout />,
+		errorElement: <RouterErrorBoundary />,
 		children: [
 			{ path: '/', element: <Home /> },
 			{ path: '/login', element: <Login /> },
@@ -40,10 +41,13 @@ const router = createBrowserRouter([
 			{
 				path: '/logout',
 				loader: logoutLoader,
-				element: <p>Logging out...</p>,
-				errorElement: <RouterErrorBoundary />
+				element: <p>Logging out...</p>
 			}
 		]
+	},
+	{
+		path: '*',
+		element: <NotFound />
 	}
 ]);
 
